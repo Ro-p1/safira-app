@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Poppins", "Inter", sans-serif;
+  background: linear-gradient(180deg, #f4f8f4 0%, #ffffff 40%);
+  color: #1f3d2e;
+}
+
+.font-heading {
+  font-family: "Baloo 2", "Fredoka", sans-serif;
+}
+
+/* Frame ala HP di tampilan desktop */
+.app-frame {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  box-shadow: 0 0 40px rgba(31, 61, 46, 0.08);
+}
+
+@media (min-width: 431px) {
+  .app-frame {
+    min-height: 100vh;
+    border-left: 1px solid #e5e9e5;
+    border-right: 1px solid #e5e9e5;
+  }
+}
+
+.gradient-header {
+  background: linear-gradient(135deg, #1f3d2e 0%, #2e5339 60%, #6b8f5c 100%);
+}
+
+.gradient-btn {
+  background: linear-gradient(135deg, #1f3d2e 0%, #2e5339 100%);
+}
