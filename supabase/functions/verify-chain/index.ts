@@ -53,13 +53,6 @@ function buildLogHashInput(row: any, prevHash: string): string {
   });
 }
 
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
-  });
-}
-
 Deno.serve(async (req) => {
   const preflight = handleCorsPreflight(req);
   if (preflight) return preflight;
@@ -67,7 +60,7 @@ Deno.serve(async (req) => {
   try {
     const { qr_code_value } = await req.json();
     if (!qr_code_value) {
-      return json({ error: "qr_code_value wajib diisi" }, 400);
+      return new Response(JSON.stringify({ error: "qr_code_value wajib diisi" }), { status: 400, headers: { ...corsHeaders, "content-type": "application/json" } });
     }
 
     // ============================================================
@@ -81,7 +74,7 @@ Deno.serve(async (req) => {
       .order("dibuat_pada", { ascending: true });
 
     if (pErr || !productChain || productChain.length === 0) {
-      return json({ error: "Produk tidak ditemukan" }, 404);
+      return new Response(JSON.stringify({ error: "Produk tidak ditemukan" }), { status: 404, headers: { ...corsHeaders, "content-type": "application/json" } });
     }
 
     let productChainValid = true;
@@ -127,13 +120,16 @@ Deno.serve(async (req) => {
 
     const isValid = productChainValid && logChainValid;
 
-    return json({
-      valid: isValid,
-      message: isValid ? "Terverifikasi ✅" : "Data Tidak Konsisten ⚠️",
-      product_versions: productChain.length,
-      distribution_logs_checked: logChain?.length ?? 0,
-    });
+    return new Response(
+      JSON.stringify({
+        valid: isValid,
+        message: isValid ? "Terverifikasi ✅" : "Data Tidak Konsisten ⚠️",
+        product_versions: productChain.length,
+        distribution_logs_checked: logChain?.length ?? 0,
+      }),
+      { status: 200, headers: { ...corsHeaders, "content-type": "application/json" } }
+    );
   } catch (err) {
-    return json({ error: String(err) }, 500);
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500, headers: { ...corsHeaders, "content-type": "application/json" } });
   }
 });

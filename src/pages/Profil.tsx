@@ -67,7 +67,8 @@ export default function Profil() {
   return (
     <div className="app-frame pb-24">
       <div className="gradient-header px-6 pt-6 pb-4 text-white">
-<div className="flex items-center gap-2"><img src="/logo.png" alt="SAFIRA" className="w-6 h-6" /><div><h1 className="font-heading text-lg font-bold">Profil</h1>{user && <p className="text-sm text-white/80">{user.email}</p>}</div></div>
+        <h1 className="font-heading text-lg font-bold">Profil</h1>
+        {user && <p className="text-sm text-white/80">{user.email}</p>}
       </div>
 
       <div className="px-6 py-6 space-y-4">

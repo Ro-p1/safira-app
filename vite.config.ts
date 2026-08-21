@@ -7,13 +7,16 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "logo-192.png", "logo-512.png"],
+      includeAssets: ["favicon.ico", "logo-192.png", "logo-512.png", "logo-mark.png"],
       manifest: {
         name: "SAFIRA - Smart and Transparent Food Intelligent Risk Analysis",
         short_name: "SAFIRA",
         description: "Aplikasi keamanan pangan berbasis Blockchain + AI",
-        theme_color: "#1F3D2E",
-        background_color: "#FFFFFF",
+        theme_color: "#183321",
+        // Sama dengan warna latar logo, supaya splash screen native yang
+        // di-generate otomatis oleh Android/Chrome saat ikon SAFIRA di-tap
+        // dari layar utama menyatu mulus dengan ikonnya (tidak ada "kotak").
+        background_color: "#183321",
         display: "standalone",
         start_url: "/",
         icons: [

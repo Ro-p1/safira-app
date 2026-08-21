@@ -48,7 +48,7 @@ export default function Onboarding({ onFinish }: { onFinish: () => void }) {
     <div className="app-frame flex flex-col">
       <div className="gradient-header px-6 pt-6 pb-4 flex items-center justify-between text-white">
         <span className="font-heading font-bold text-lg tracking-wide flex items-center gap-2">
-          <img src="/logo.png" alt="" className="w-6 h-6 object-contain" />
+          <img src="/logo-192.png" alt="" className="w-6 h-6 object-contain" />
           SAFIRA
         </span>
         <button onClick={onFinish} className="text-sm text-white/80">

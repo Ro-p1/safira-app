@@ -65,7 +65,7 @@ export default function Riwayat() {
   return (
     <div className="app-frame pb-24">
       <div className="gradient-header px-6 pt-6 pb-4 text-white">
-<div className="flex items-center gap-2"><img src="/logo.png" alt="SAFIRA" className="w-6 h-6" /><h1 className="font-heading text-lg font-bold">Riwayat Scan</h1></div>
+        <h1 className="font-heading text-lg font-bold">Riwayat Scan</h1>
       </div>
 
       <div className="px-6 py-4">

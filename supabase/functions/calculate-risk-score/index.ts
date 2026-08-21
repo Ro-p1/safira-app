@@ -5,7 +5,6 @@
 // lalu insert row baru ke risk_scores (insert-only, bukan update).
 // ============================================================
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { corsHeaders, handleCorsPreflight } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -20,17 +19,7 @@ interface WebhookPayload {
   record: { product_id: string };
 }
 
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
-  });
-}
-
 Deno.serve(async (req) => {
-  const preflight = handleCorsPreflight(req);
-  if (preflight) return preflight;
-
   try {
     const payload: WebhookPayload = await req.json();
     const productId = payload.record.product_id;
@@ -43,7 +32,7 @@ Deno.serve(async (req) => {
       .single();
 
     if (productErr || !product) {
-      return json({ error: "Produk tidak ditemukan" }, 404);
+      return new Response(JSON.stringify({ error: "Produk tidak ditemukan" }), { status: 404 });
     }
 
     const category = product.product_categories;
@@ -229,11 +218,14 @@ Deno.serve(async (req) => {
     });
 
     if (insertErr) {
-      return json({ error: insertErr.message }, 500);
+      return new Response(JSON.stringify({ error: insertErr.message }), { status: 500 });
     }
 
-    return json({ success: true, total_score: totalScore, status });
+    return new Response(JSON.stringify({ success: true, total_score: totalScore, status }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
   } catch (err) {
-    return json({ error: String(err) }, 500);
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
   }
 });

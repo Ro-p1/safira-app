@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./lib/AuthContext";
+import Splash from "./components/Splash";
 import Onboarding from "./pages/Onboarding";
 import Scan from "./pages/Scan";
 import Tracking from "./pages/Tracking";
@@ -19,9 +21,19 @@ export default function App() {
   // localStorage atau database mana pun, sesuai spesifikasi.
   const [onboardingDone, setOnboardingDone] = useState(false);
 
+  // Splash screen (logo di atas latar hijau, sama seperti ikon aplikasi)
+  // muncul sesaat setiap kali aplikasi dibuka/direfresh, sebelum Onboarding.
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 1400);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
+        <AnimatePresence>{showSplash && <Splash />}</AnimatePresence>
         {!onboardingDone ? (
           <Onboarding onFinish={() => setOnboardingDone(true)} />
         ) : (
