@@ -10,6 +10,10 @@ import { addGuestHistoryRecord } from "../lib/guestHistory";
 export default function Scan() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  // Simpan video track aktif supaya tombol flash bisa toggle torch-nya
+  // kapan saja, tanpa perlu tahu soal variabel `stream` lokal di useEffect.
+  const trackRef = useRef<MediaStreamTrack | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
   // Dukung deep link /scan/:qrCodeValue (mis. dari QR yang di-scan aplikasi
@@ -22,6 +26,9 @@ export default function Scan() {
   const [manualCode, setManualCode] = useState("");
   const [scanning, setScanning] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [torchOn, setTorchOn] = useState(false);
+  const [torchSupported, setTorchSupported] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
 
   useEffect(() => {
     if (deepLinkQrCode) {
@@ -45,6 +52,13 @@ export default function Scan() {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
+
+        // Simpan track kamera belakang buat kontrol torch (flash), dan cek
+        // apakah device/browser ini memang mendukung kemampuan torch.
+        const track = stream.getVideoTracks()[0] ?? null;
+        trackRef.current = track;
+        const capabilities = track?.getCapabilities?.() as (MediaTrackCapabilities & { torch?: boolean }) | undefined;
+        setTorchSupported(!!capabilities?.torch);
 
         // Gunakan BarcodeDetector native kalau tersedia (Chrome/Android).
         // Kalau tidak ada (mis. Safari/iOS), fallback ke jsQR: gambar tiap
@@ -94,9 +108,63 @@ export default function Scan() {
     return () => {
       if (stream) stream.getTracks().forEach((t) => t.stop());
       if (detectorInterval) clearInterval(detectorInterval);
+      trackRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function toggleTorch() {
+    const track = trackRef.current;
+    if (!track || !torchSupported) return;
+    try {
+      const next = !torchOn;
+      await track.applyConstraints({ advanced: [{ torch: next } as any] });
+      setTorchOn(next);
+    } catch {
+      // Sebagian browser melaporkan torch didukung tapi gagal saat dipakai —
+      // gagal senyap saja, tombol keyboard/manual tetap jadi fallback.
+    }
+  }
+
+  function handleGalleryClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleGalleryFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // reset supaya bisa pilih file yang sama lagi
+    if (!file) return;
+    setGalleryError(null);
+
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        setGalleryError("Gagal membaca gambar.");
+        URL.revokeObjectURL(objectUrl);
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      URL.revokeObjectURL(objectUrl);
+      if (code?.data) {
+        setScanning(false);
+        handleScanResult(code.data);
+      } else {
+        setGalleryError("QR code tidak terbaca dari gambar ini. Coba foto lain atau input manual.");
+      }
+    };
+    img.onerror = () => {
+      setGalleryError("Gagal membuka gambar.");
+      URL.revokeObjectURL(objectUrl);
+    };
+    img.src = objectUrl;
+  }
 
   async function handleScanResult(rawValue: string) {
     // QR encode berupa URL deep-link: https://<domain>/scan/{qr_code_value}
@@ -182,12 +250,28 @@ export default function Scan() {
             </div>
           </div>
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 text-white">
-            <button className="bg-black/40 p-3 rounded-full"><Zap size={20} /></button>
-            <button className="bg-black/40 p-3 rounded-full"><ImageIcon size={20} /></button>
+            <button
+              onClick={toggleTorch}
+              disabled={!torchSupported}
+              className={`p-3 rounded-full disabled:opacity-40 ${torchOn ? "bg-safira-mosslight text-safira-dark" : "bg-black/40"}`}
+              title={torchSupported ? "Nyalakan/matikan senter" : "Senter tidak didukung perangkat ini"}
+            >
+              <Zap size={20} />
+            </button>
+            <button onClick={handleGalleryClick} className="bg-black/40 p-3 rounded-full" title="Pilih gambar QR dari galeri">
+              <ImageIcon size={20} />
+            </button>
             <button onClick={() => setManualMode(true)} className="bg-black/40 p-3 rounded-full">
               <Keyboard size={20} />
             </button>
           </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleGalleryFile}
+            className="hidden"
+          />
         </div>
       )}
 
@@ -217,6 +301,12 @@ export default function Scan() {
       {error && (
         <div className="mx-6 mt-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl p-4">
           {error}
+        </div>
+      )}
+
+      {galleryError && (
+        <div className="mx-6 mt-4 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-2xl p-4">
+          {galleryError}
         </div>
       )}
 

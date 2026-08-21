@@ -91,6 +91,16 @@ export default function HasilAnalisis() {
         </div>
       </div>
 
+      {product.foto_url && (
+        <div className="px-6 pt-5">
+          <img
+            src={product.foto_url}
+            alt={product.nama_produk}
+            className="w-full h-48 object-cover rounded-3xl shadow-sm"
+          />
+        </div>
+      )}
+
       <div className="px-6 py-6">
         <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm flex flex-col items-center">
           <svg width="180" height="180" viewBox="0 0 180 180">

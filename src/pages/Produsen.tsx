@@ -60,7 +60,10 @@ export default function Produsen() {
     return (
       <div className="app-frame pb-24">
         <div className="gradient-header px-6 pt-6 pb-4 text-white">
-          <h1 className="font-heading text-lg font-bold">Produsen</h1>
+          <h1 className="font-heading text-lg font-bold flex items-center gap-2">
+            <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
+            Produsen
+          </h1>
         </div>
         <div className="px-6 py-10 text-center text-gray-500">
           <p>Silakan login terlebih dahulu untuk mengakses fitur produsen.</p>
@@ -74,7 +77,10 @@ export default function Produsen() {
     return (
       <div className="app-frame pb-24">
         <div className="gradient-header px-6 pt-6 pb-4 text-white">
-          <h1 className="font-heading text-lg font-bold">Daftar sebagai Produsen</h1>
+          <h1 className="font-heading text-lg font-bold flex items-center gap-2">
+            <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
+            Daftar sebagai Produsen
+          </h1>
         </div>
         <form onSubmit={handleRegister} className="px-6 py-6 space-y-4">
           <Field label="Nama Usaha/Tani" value={regNama} onChange={setRegNama} required />
@@ -97,7 +103,10 @@ export default function Produsen() {
     return (
       <div className="app-frame pb-24">
         <div className="gradient-header px-6 pt-6 pb-4 text-white">
-          <h1 className="font-heading text-lg font-bold">Menunggu Verifikasi</h1>
+          <h1 className="font-heading text-lg font-bold flex items-center gap-2">
+            <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
+            Menunggu Verifikasi
+          </h1>
         </div>
         <div className="px-6 py-10 text-center text-gray-500 text-sm">
           Pendaftaran producer Anda ({producer.nama}) sedang ditinjau. Untuk versi awal, verifikasi
@@ -112,7 +121,10 @@ export default function Produsen() {
   return (
     <div className="app-frame pb-24">
       <div className="gradient-header px-6 pt-6 pb-4 text-white">
-        <h1 className="font-heading text-lg font-bold">Dashboard Produsen</h1>
+        <h1 className="font-heading text-lg font-bold flex items-center gap-2">
+          <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
+          Dashboard Produsen
+        </h1>
         <p className="text-sm text-white/80">{producer.nama}</p>
       </div>
 
