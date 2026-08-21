@@ -81,6 +81,51 @@ export default function Tracking() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
+  // Rute yang benar-benar ngikutin jalan (bukan garis lurus tembus).
+  // Diambil dari OSRM (layanan routing publik gratis, tanpa API key).
+  // Kalau gagal/masih diproses, fallback-nya tetap garis lurus supaya
+  // peta gak kosong.
+  const [routeCoords, setRouteCoords] = useState<[number, number][] | null>(null);
+
+  useEffect(() => {
+    const points: { lat: number; lng: number }[] = [];
+    if (product?.produksi_lat != null && product?.produksi_lng != null) {
+      points.push({ lat: product.produksi_lat, lng: product.produksi_lng });
+    }
+    logs.forEach((log) => {
+      if (log.lat != null && log.lng != null) points.push({ lat: log.lat, lng: log.lng });
+    });
+
+    if (points.length < 2) {
+      setRouteCoords(null);
+      return;
+    }
+
+    let cancelled = false;
+    // OSRM minta format lng,lat (kebalikan dari lat,lng yang biasa dipakai di app ini).
+    const coordsParam = points.map((p) => `${p.lng},${p.lat}`).join(";");
+    fetch(`https://router.project-osrm.org/route/v1/driving/${coordsParam}?overview=full&geometries=geojson`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        const coords = data?.routes?.[0]?.geometry?.coordinates as [number, number][] | undefined;
+        if (Array.isArray(coords) && coords.length > 1) {
+          // GeoJSON balikin [lng, lat], Leaflet butuh [lat, lng] — dibalik dulu.
+          setRouteCoords(coords.map((c) => [c[1], c[0]] as [number, number]));
+        } else {
+          setRouteCoords(null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setRouteCoords(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?.produksi_lat, product?.produksi_lng, logs.map((l) => `${l.lat},${l.lng}`).join("|")]);
+
   async function load() {
     setLoading(true);
     const { data: productData } = await supabase
@@ -197,7 +242,9 @@ export default function Tracking() {
               <FitBounds points={geoPoints} />
               {geoPoints.length > 1 && (
                 <Polyline
-                  positions={geoPoints.map((p) => [p.lat, p.lng])}
+                  // Pakai rute jalan (routeCoords) kalau sudah didapat dari OSRM;
+                  // kalau belum/gagal, sementara tampilkan garis lurus dulu.
+                  positions={routeCoords ?? geoPoints.map((p) => [p.lat, p.lng])}
                   pathOptions={{ color: "#1F3D2E", weight: 4, opacity: 0.85 }}
                 />
               )}
