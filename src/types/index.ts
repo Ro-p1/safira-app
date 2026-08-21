@@ -86,4 +86,5 @@ export interface GuestScanRecord {
   status: string;
   total_score: number;
   waktu_scan: string;
+  foto_url?: string | null;
 }

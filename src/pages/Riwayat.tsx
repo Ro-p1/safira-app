@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, QrCode } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../lib/AuthContext";
 import { getGuestHistory } from "../lib/guestHistory";
@@ -10,7 +10,7 @@ import BottomNav from "../components/BottomNav";
 interface ServerHistoryItem {
   id: string;
   waktu_scan: string;
-  product: { id: string; nama_produk: string };
+  product: { id: string; nama_produk: string; foto_url: string | null };
   status?: string;
   total_score?: number;
 }
@@ -38,7 +38,7 @@ export default function Riwayat() {
   async function loadServerHistory() {
     const { data } = await supabase
       .from("scan_history")
-      .select("id, waktu_scan, product:products(id, nama_produk)")
+      .select("id, waktu_scan, product:products(id, nama_produk, foto_url)")
       .order("waktu_scan", { ascending: false });
 
     const items: ServerHistoryItem[] = [];
@@ -96,6 +96,7 @@ export default function Riwayat() {
             <HistoryCard
               key={h.id}
               nama={h.product.nama_produk}
+              foto={h.product.foto_url}
               waktu={h.waktu_scan}
               status={h.status ?? "MENUNGGU_DATA"}
               skor={h.total_score ?? 0}
@@ -108,6 +109,7 @@ export default function Riwayat() {
             <HistoryCard
               key={i}
               nama={h.nama_produk}
+              foto={h.foto_url}
               waktu={h.waktu_scan}
               status={h.status}
               skor={h.total_score}
@@ -127,12 +129,14 @@ export default function Riwayat() {
 
 function HistoryCard({
   nama,
+  foto,
   waktu,
   status,
   skor,
   onClick,
 }: {
   nama: string;
+  foto?: string | null;
   waktu: string;
   status: string;
   skor: number;
@@ -142,9 +146,16 @@ function HistoryCard({
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center justify-between bg-white border border-gray-100 rounded-2xl p-4 shadow-sm text-left"
+      className="w-full flex items-center gap-3 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm text-left"
     >
-      <div>
+      <div className="w-10 h-10 bg-safira-mosslight/20 rounded-xl flex items-center justify-center text-safira-dark overflow-hidden shrink-0">
+        {foto ? (
+          <img src={foto} alt={nama} className="w-full h-full object-cover" />
+        ) : (
+          <QrCode size={18} />
+        )}
+      </div>
+      <div className="flex-1">
         <p className="font-medium text-safira-dark">{nama}</p>
         <p className="text-xs text-gray-400">{new Date(waktu).toLocaleString("id-ID")}</p>
       </div>

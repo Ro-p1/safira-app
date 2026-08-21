@@ -213,6 +213,7 @@ export default function Scan() {
         status: latestScore?.status ?? "MENUNGGU_DATA",
         total_score: latestScore?.total_score ?? 0,
         waktu_scan: new Date().toISOString(),
+        foto_url: product.foto_url ?? null,
       });
     }
 
