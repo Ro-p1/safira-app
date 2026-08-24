@@ -14,21 +14,13 @@ export default function Splash() {
       style={{ backgroundColor: "#183321" }}
     >
       <motion.img
-        src="/logo-mark.png"
+        src="/logo-full.png"
         alt="SAFIRA"
         initial={{ scale: 0.85, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-24 h-auto object-contain"
+        className="w-32 h-auto object-contain"
       />
-      <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25, duration: 0.4 }}
-        className="mt-5 font-heading font-bold text-lg tracking-wide text-white"
-      >
-        SAFIRA
-      </motion.p>
     </motion.div>
   );
 }
