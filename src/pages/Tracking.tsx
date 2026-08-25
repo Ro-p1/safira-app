@@ -8,7 +8,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { ArrowLeft, MapPin, Truck, Thermometer, Droplet, Link2, ShieldCheck } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { supabase } from "../lib/supabase";
-import { Product, DistributionLog, ProductCategory } from "../types";
+import { Product, DistributionLog, ProductCategory, RiskScore } from "../types";
 import BottomNav from "../components/BottomNav";
 
 // Leaflet + bundler modern (Vite) butuh path ikon default di-set ulang manual,
@@ -68,12 +68,29 @@ function FitBounds({ points }: { points: GeoPoint[] }) {
   return null;
 }
 
+// Warna & label status — disamakan persis dengan Hasil Analisis, supaya
+// badge "STATUS" di sini gak lagi pakai perhitungan sendiri yang cuma
+// ngecek 1 titik terakhir (Aman/Waspada doang, gak pernah bisa BERESIKO).
+const STATUS_COLOR: Record<string, string> = {
+  AMAN: "#3E7D3E",
+  WASPADA: "#D4AF37",
+  BERESIKO: "#C0392B",
+  MENUNGGU_DATA: "#9CA3AF",
+};
+const STATUS_LABEL: Record<string, string> = {
+  AMAN: "Aman",
+  WASPADA: "Waspada",
+  BERESIKO: "Beresiko",
+  MENUNGGU_DATA: "Menunggu Data",
+};
+
 export default function Tracking() {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [category, setCategory] = useState<ProductCategory | null>(null);
   const [logs, setLogs] = useState<DistributionLog[]>([]);
+  const [score, setScore] = useState<RiskScore | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -166,6 +183,15 @@ export default function Tracking() {
 
     setProduct(effectiveProduct);
     setCategory(productData?.product_categories ?? null);
+
+    const { data: scoreData } = await supabase
+      .from("risk_scores")
+      .select("*")
+      .in("product_id", allVersionIds)
+      .order("dihitung_pada", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    setScore(scoreData);
 
     const { data: logData } = await supabase
       .from("distribution_logs")
@@ -335,8 +361,8 @@ export default function Tracking() {
           <InfoStat
             icon={<ShieldCheck size={16} />}
             label="Status"
-            value={hasWarningNow ? "Waspada" : "Aman"}
-            warn={hasWarningNow}
+            value={score ? STATUS_LABEL[score.status] ?? score.status : "Menunggu Data"}
+            warn={score ? score.status !== "AMAN" : false}
           />
         </div>
 
