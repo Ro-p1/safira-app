@@ -42,10 +42,16 @@ export default function DetailProdukProdusen() {
         .order("dibuat_pada", { ascending: false });
       setVersions(versionData ?? []);
 
+      // Gabungin ID semua versi (hasil "Ajukan Koreksi Data" bikin baris
+      // baru tiap kali) — biar skor & catatan distribusi dari versi
+      // sebelum-sebelumnya tetap kebaca, bukan cuma nempel ke versi
+      // paling baru doang.
+      const allVersionIds = versionData && versionData.length > 0 ? versionData.map((v) => v.id) : [productId];
+
       const { data: scoreData } = await supabase
         .from("risk_scores")
         .select("*")
-        .eq("product_id", productId)
+        .in("product_id", allVersionIds)
         .order("dihitung_pada", { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -54,7 +60,7 @@ export default function DetailProdukProdusen() {
       const { data: logData } = await supabase
         .from("distribution_logs")
         .select("*")
-        .eq("product_id", productId)
+        .in("product_id", allVersionIds)
         .order("waktu_dicatat", { ascending: false });
       setLogs(logData ?? []);
     }

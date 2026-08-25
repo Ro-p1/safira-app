@@ -134,13 +134,43 @@ export default function Tracking() {
       .eq("id", productId)
       .single();
 
-    setProduct(productData);
+    // Ambil SEMUA versi produk ini (hasil "Ajukan Koreksi Data" bikin baris
+    // baru tapi qr_code_value-nya tetap sama) — supaya titik distribusi dan
+    // titik produksi dari versi-versi sebelumnya tetap kebaca di peta,
+    // bukan cuma nempel ke 1 ID versi yang paling baru.
+    let allVersionIds = [productId];
+    let effectiveProduct = productData;
+    if (productData?.qr_code_value) {
+      const { data: versions } = await supabase
+        .from("products")
+        .select("id, produksi_lat, produksi_lng, dibuat_pada")
+        .eq("qr_code_value", productData.qr_code_value)
+        .order("dibuat_pada", { ascending: false });
+      if (versions && versions.length > 0) {
+        allVersionIds = versions.map((v) => v.id);
+        // Kalau versi terbaru gak punya koordinat produksi (misal abis
+        // dikoreksi tapi datanya kosong), pakai koordinat dari versi
+        // sebelumnya yang masih punya, biar titik produksi gak hilang.
+        if (productData.produksi_lat == null || productData.produksi_lng == null) {
+          const withCoords = versions.find((v) => v.produksi_lat != null && v.produksi_lng != null);
+          if (withCoords) {
+            effectiveProduct = {
+              ...productData,
+              produksi_lat: withCoords.produksi_lat,
+              produksi_lng: withCoords.produksi_lng,
+            };
+          }
+        }
+      }
+    }
+
+    setProduct(effectiveProduct);
     setCategory(productData?.product_categories ?? null);
 
     const { data: logData } = await supabase
       .from("distribution_logs")
       .select("*")
-      .eq("product_id", productId)
+      .in("product_id", allVersionIds)
       .order("waktu_dicatat", { ascending: true });
 
     setLogs(logData ?? []);

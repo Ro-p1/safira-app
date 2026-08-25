@@ -34,10 +34,25 @@ export default function HasilAnalisis() {
       .single();
     setProduct(productData);
 
+    // Kalau produk ini pernah dikoreksi ("Ajukan Koreksi Data"), skor dari
+    // sebelum koreksi nempel di ID versi lama — dicari juga di seluruh
+    // riwayat versi (qr_code_value sama), biar gak keliatan "Menunggu Data"
+    // padahal sebenarnya udah pernah dihitung.
+    let scoreProductIds = [productId as string];
+    if (productData?.qr_code_value) {
+      const { data: versionData } = await supabase
+        .from("products")
+        .select("id")
+        .eq("qr_code_value", productData.qr_code_value);
+      if (versionData && versionData.length > 0) {
+        scoreProductIds = versionData.map((v) => v.id);
+      }
+    }
+
     const { data: scoreData } = await supabase
       .from("risk_scores")
       .select("*")
-      .eq("product_id", productId)
+      .in("product_id", scoreProductIds)
       .order("dihitung_pada", { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -176,7 +191,7 @@ export default function HasilAnalisis() {
       <div className="px-6">
         <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm mb-4">
           <h3 className="font-heading font-semibold text-safira-dark mb-3">Informasi Produk</h3>
-          <InfoRow label="Produsen" value={product.lokasi_produksi} />
+          <InfoRow label="Lokasi Produksi" value={product.lokasi_produksi} />
           <InfoRow label="Tanggal Panen" value={new Date(product.tanggal_panen).toLocaleDateString("id-ID")} />
           <InfoRow label="Sertifikasi" value={product.sertifikasi.join(", ") || "-"} />
         </div>

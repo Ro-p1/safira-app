@@ -55,6 +55,12 @@ export default function KoreksiData() {
         metode_produksi: metode || null,
         sertifikasi: original.sertifikasi,
         foto_url: original.foto_url,
+        // Sebelumnya 2 field ini gak disertain sama sekali, jadi koordinat
+        // GPS produk hilang (jadi NULL) setiap kali ada koreksi data.
+        // Sekarang dibawa dari data lama, biar titik produksi di peta
+        // Tracking gak ilang gara-gara dikoreksi.
+        produksi_lat: original.produksi_lat,
+        produksi_lng: original.produksi_lng,
         supersedes_id: original.id,
       },
       headers: { Authorization: `Bearer ${session?.access_token}` },
