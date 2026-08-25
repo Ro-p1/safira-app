@@ -120,13 +120,89 @@ export default function DetailProdukProdusen() {
   }
 
   function downloadQR() {
-    const canvas = document.getElementById("product-qr") as HTMLCanvasElement;
-    if (!canvas) return;
+    const qrCanvas = document.getElementById("product-qr") as HTMLCanvasElement | null;
+    if (!qrCanvas || !product) return;
+
+    // Bikin canvas baru yang lebih gede, isinya: logo kecil "SAFIRA" di
+    // atas, QR code-nya (di-gambar ulang di ukuran ASLI biar gak blur/
+    // gampang di-scan), nama produk, lalu kode manual di paling bawah —
+    // biar 1 gambar unduhan udah lengkap buat ditempel di kemasan.
+    const qrSize = qrCanvas.width; // ukuran asli, jangan di-scale biar QR gak blur
+    const width = Math.max(qrSize + 48, 280);
+    const padding = 24;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.font = "bold 16px sans-serif";
+    const nameLines = wrapText(ctx, product.nama_produk, width - padding * 2, 16);
+    const code = product.qr_code_value;
+    ctx.font = "12px monospace";
+    const codeLines = ctx.measureText(code).width > width - padding * 2 ? 2 : 1;
+
+    const headerH = 26;
+    const nameH = nameLines.length * 22;
+    const codeH = codeLines * 16 + 6;
+    const height = padding + headerH + qrSize + 16 + nameH + codeH + padding;
+    canvas.width = width;
+    canvas.height = height;
+
+    // Background putih (kalau gak di-set, PNG transparan bisa kelihatan
+    // aneh pas di-print/dibuka di app yang gak render transparansi).
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, width, height);
+
+    let y = padding;
+    ctx.fillStyle = "#1F3D2E";
+    ctx.font = "bold 13px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("SAFIRA", width / 2, y + 13);
+    y += headerH;
+
+    ctx.drawImage(qrCanvas, (width - qrSize) / 2, y, qrSize, qrSize);
+    y += qrSize + 16;
+
+    ctx.fillStyle = "#1F3D2E";
+    ctx.font = "bold 16px sans-serif";
+    nameLines.forEach((line, i) => ctx.fillText(line, width / 2, y + 16 + i * 22));
+    y += nameH;
+
+    ctx.fillStyle = "#6B7280";
+    ctx.font = "12px monospace";
+    if (codeLines === 2) {
+      const mid = Math.ceil(code.length / 2);
+      ctx.fillText(code.slice(0, mid), width / 2, y + 14);
+      ctx.fillText(code.slice(mid), width / 2, y + 30);
+    } else {
+      ctx.fillText(code, width / 2, y + 14);
+    }
+
     const url = canvas.toDataURL("image/png");
     const a = document.createElement("a");
     a.href = url;
-    a.download = `qr-${product?.nama_produk}.png`;
+    a.download = `qr-${product.nama_produk}.png`;
     a.click();
+  }
+
+  // Pecah teks jadi beberapa baris supaya nama produk yang panjang gak
+  // kepotong/tumpuk di gambar QR yang diunduh.
+  function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, fontSize: number): string[] {
+    ctx.font = `bold ${fontSize}px sans-serif`;
+    const words = text.split(" ");
+    const lines: string[] = [];
+    let current = "";
+    for (const word of words) {
+      const test = current ? `${current} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && current) {
+        lines.push(current);
+        current = word;
+      } else {
+        current = test;
+      }
+    }
+    if (current) lines.push(current);
+    return lines.slice(0, 2); // maksimal 2 baris, biar gambar gak kepanjangan
   }
 
   if (!product) return <div className="app-frame p-6">Memuat...</div>;
