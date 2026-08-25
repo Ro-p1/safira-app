@@ -19,11 +19,30 @@ export default function HasilAnalisis() {
   const [score, setScore] = useState<RiskScore | null>(null);
   const [verify, setVerify] = useState<{ valid: boolean; message: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recalculating, setRecalculating] = useState(false);
 
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
+
+  async function recalculateScore() {
+    if (!productId || recalculating) return;
+    setRecalculating(true);
+    try {
+      // Panggil langsung fungsi kalkulasinya (bukan cuma re-fetch skor lama).
+      // Payload-nya niru bentuk yang dikirim Database Webhook, karena fungsi
+      // ini cuma butuh record.product_id dari situ.
+      await supabase.functions.invoke("calculate-risk-score", {
+        body: { type: "MANUAL_RECALCULATE", table: "products", record: { product_id: productId } },
+      });
+    } catch {
+      // Kalau gagal (mis. jaringan/timeout), diamkan saja — load() di bawah
+      // akan tetap nampilin skor terakhir yang ada, bukan bikin error keras.
+    }
+    await load();
+    setRecalculating(false);
+  }
 
   async function load() {
     setLoading(true);
@@ -217,10 +236,12 @@ export default function HasilAnalisis() {
         </div>
 
         <button
-          onClick={load}
-          className="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-2xl py-3 text-sm text-gray-500 mb-4"
+          onClick={recalculateScore}
+          disabled={recalculating}
+          className="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-2xl py-3 text-sm text-gray-500 mb-4 disabled:opacity-50"
         >
-          <RefreshCw size={14} /> Hitung Ulang Skor
+          <RefreshCw size={14} className={recalculating ? "animate-spin" : ""} />
+          {recalculating ? "Menghitung ulang..." : "Hitung Ulang Skor"}
         </button>
       </div>
 

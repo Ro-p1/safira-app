@@ -8,6 +8,16 @@ import BottomNav from "../components/BottomNav";
 
 const APP_DOMAIN = import.meta.env.VITE_APP_DOMAIN || window.location.origin;
 
+// Warna badge status — sama seperti yang dipakai di Hasil Analisis & Riwayat,
+// biar konsisten satu app. Sebelumnya di sini warnanya statis kuning terus,
+// gak ikut berubah sesuai AMAN/WASPADA/BERESIKO.
+const statusColor: Record<string, string> = {
+  AMAN: "#3E7D3E",
+  WASPADA: "#D4AF37",
+  BERESIKO: "#C0392B",
+  MENUNGGU_DATA: "#9CA3AF",
+};
+
 export default function DetailProdukProdusen() {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -160,7 +170,13 @@ export default function DetailProdukProdusen() {
               <p className="font-heading text-2xl font-bold text-safira-dark">{Math.round(score.total_score)}</p>
               <p className="text-xs text-gray-400">Panen {new Date(product.tanggal_panen).toLocaleDateString("id-ID")}</p>
             </div>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+            <span
+              className="px-3 py-1 rounded-full text-xs font-semibold"
+              style={{
+                backgroundColor: `${statusColor[score.status] ?? statusColor.MENUNGGU_DATA}20`,
+                color: statusColor[score.status] ?? statusColor.MENUNGGU_DATA,
+              }}
+            >
               {score.status}
             </span>
           </div>
