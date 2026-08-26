@@ -83,6 +83,11 @@ const STATUS_LABEL: Record<string, string> = {
   BERESIKO: "Beresiko",
   MENUNGGU_DATA: "Menunggu Data",
 };
+const STATUS_PERJALANAN_LABEL: Record<string, string> = {
+  BARU_BERANGKAT: "Baru Berangkat",
+  TRANSIT: "Transit",
+  SAMPAI_TUJUAN: "Sampai Tujuan",
+};
 
 export default function Tracking() {
   const { productId } = useParams();
@@ -431,6 +436,7 @@ export default function Tracking() {
                   time={log.waktu_dicatat}
                   hash={log.record_hash}
                   color={isLogWarning(log) ? "bg-red-500" : "bg-safira-mosslight"}
+                  badge={STATUS_PERJALANAN_LABEL[log.status_perjalanan ?? "TRANSIT"]}
                 />
               ))}
             </div>
@@ -500,12 +506,14 @@ function RouteStep({
   time,
   hash,
   color,
+  badge,
 }: {
   label: string;
   sub: string;
   time: string;
   hash: string;
   color: string;
+  badge?: string;
 }) {
   return (
     <div className="flex gap-3">
@@ -513,7 +521,14 @@ function RouteStep({
         <Truck size={14} />
       </div>
       <div>
-        <p className="font-medium text-sm text-safira-dark">{label}</p>
+        <div className="flex items-center gap-2">
+          <p className="font-medium text-sm text-safira-dark">{label}</p>
+          {badge && (
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-safira-mosslight/20 text-safira-dark">
+              {badge}
+            </span>
+          )}
+        </div>
         <p className="text-xs text-gray-500">{sub}</p>
         <p className="text-[10px] text-gray-400">
           {new Date(time).toLocaleString("id-ID")} · {hash.slice(0, 8)}...{hash.slice(-6)}

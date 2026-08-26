@@ -18,6 +18,12 @@ const statusColor: Record<string, string> = {
   MENUNGGU_DATA: "#9CA3AF",
 };
 
+const STATUS_PERJALANAN_LABEL: Record<string, string> = {
+  BARU_BERANGKAT: "Baru Berangkat",
+  TRANSIT: "Transit",
+  SAMPAI_TUJUAN: "Sampai Tujuan",
+};
+
 export default function DetailProdukProdusen() {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -27,6 +33,7 @@ export default function DetailProdukProdusen() {
   const [logs, setLogs] = useState<any[]>([]);
 
   const [lokasiTransit, setLokasiTransit] = useState("");
+  const [statusPerjalanan, setStatusPerjalanan] = useState<"BARU_BERANGKAT" | "TRANSIT" | "SAMPAI_TUJUAN">("TRANSIT");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
   const [locating, setLocating] = useState(false);
@@ -100,6 +107,7 @@ export default function DetailProdukProdusen() {
       body: {
         product_id: productId,
         lokasi_transit: lokasiTransit,
+        status_perjalanan: statusPerjalanan,
         lat: lat ? parseFloat(lat) : null,
         lng: lng ? parseFloat(lng) : null,
         suhu: parseFloat(suhu),
@@ -110,6 +118,7 @@ export default function DetailProdukProdusen() {
     });
 
     setLokasiTransit("");
+    setStatusPerjalanan("TRANSIT");
     setLat("");
     setLng("");
     setSuhu("");
@@ -271,6 +280,18 @@ export default function DetailProdukProdusen() {
               className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm"
             />
             <div>
+              <label className="text-xs font-medium text-gray-500 mb-1 block">Status titik ini</label>
+              <select
+                value={statusPerjalanan}
+                onChange={(e) => setStatusPerjalanan(e.target.value as typeof statusPerjalanan)}
+                className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm bg-white"
+              >
+                <option value="BARU_BERANGKAT">Baru Berangkat (masih di lokasi produksi)</option>
+                <option value="TRANSIT">Transit (singgah, masih lanjut lagi)</option>
+                <option value="SAMPAI_TUJUAN">Sampai Tujuan (perjalanan selesai)</option>
+              </select>
+            </div>
+            <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-medium text-gray-500">Koordinat GPS titik ini</span>
                 <button
@@ -340,7 +361,12 @@ export default function DetailProdukProdusen() {
           <div className="mt-4 space-y-2">
             {logs.map((l) => (
               <div key={l.id} className="bg-safira-mosslight/10 rounded-xl p-3 text-sm">
-                <p className="font-medium text-safira-dark">{l.lokasi_transit}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-medium text-safira-dark">{l.lokasi_transit}</p>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white text-safira-dark border border-safira-mosslight/40 shrink-0">
+                    {STATUS_PERJALANAN_LABEL[l.status_perjalanan ?? "TRANSIT"]}
+                  </span>
+                </div>
                 <p className="text-xs text-gray-500">
                   {l.suhu}°C · {l.kelembapan}% RH · {new Date(l.waktu_dicatat).toLocaleString("id-ID")}
                 </p>

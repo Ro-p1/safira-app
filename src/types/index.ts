@@ -50,6 +50,7 @@ export interface DistributionLog {
   nama_petugas: string;
   prev_hash: string;
   record_hash: string;
+  status_perjalanan?: "BARU_BERANGKAT" | "TRANSIT" | "SAMPAI_TUJUAN" | null;
 }
 
 export type RiskStatus = "AMAN" | "WASPADA" | "BERESIKO" | "MENUNGGU_DATA";
