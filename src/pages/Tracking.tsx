@@ -84,9 +84,11 @@ const STATUS_LABEL: Record<string, string> = {
   MENUNGGU_DATA: "Menunggu Data",
 };
 const STATUS_PERJALANAN_LABEL: Record<string, string> = {
+  PENYIMPANAN_PRA_DISTRIBUSI: "Penyimpanan Sebelum Dikirim",
   BARU_BERANGKAT: "Baru Berangkat",
   TRANSIT: "Transit",
   SAMPAI_TUJUAN: "Sampai Tujuan",
+  PENYIMPANAN_PASCA_DISTRIBUSI: "Penyimpanan di Toko",
 };
 
 export default function Tracking() {

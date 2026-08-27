@@ -19,9 +19,11 @@ const statusColor: Record<string, string> = {
 };
 
 const STATUS_PERJALANAN_LABEL: Record<string, string> = {
+  PENYIMPANAN_PRA_DISTRIBUSI: "Penyimpanan Sebelum Dikirim",
   BARU_BERANGKAT: "Baru Berangkat",
   TRANSIT: "Transit",
   SAMPAI_TUJUAN: "Sampai Tujuan",
+  PENYIMPANAN_PASCA_DISTRIBUSI: "Penyimpanan di Toko",
 };
 
 export default function DetailProdukProdusen() {
@@ -33,7 +35,9 @@ export default function DetailProdukProdusen() {
   const [logs, setLogs] = useState<any[]>([]);
 
   const [lokasiTransit, setLokasiTransit] = useState("");
-  const [statusPerjalanan, setStatusPerjalanan] = useState<"BARU_BERANGKAT" | "TRANSIT" | "SAMPAI_TUJUAN">("TRANSIT");
+  const [statusPerjalanan, setStatusPerjalanan] = useState<
+    "PENYIMPANAN_PRA_DISTRIBUSI" | "BARU_BERANGKAT" | "TRANSIT" | "SAMPAI_TUJUAN" | "PENYIMPANAN_PASCA_DISTRIBUSI"
+  >("TRANSIT");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
   const [locating, setLocating] = useState(false);
@@ -286,9 +290,17 @@ export default function DetailProdukProdusen() {
                 onChange={(e) => setStatusPerjalanan(e.target.value as typeof statusPerjalanan)}
                 className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm bg-white"
               >
-                <option value="BARU_BERANGKAT">Baru Berangkat (masih di lokasi produksi)</option>
-                <option value="TRANSIT">Transit (singgah, masih lanjut lagi)</option>
-                <option value="SAMPAI_TUJUAN">Sampai Tujuan (perjalanan selesai)</option>
+                <optgroup label="Sebelum dikirim">
+                  <option value="PENYIMPANAN_PRA_DISTRIBUSI">Penyimpanan sebelum dikirim (masih di gudang/kebun)</option>
+                </optgroup>
+                <optgroup label="Selama perjalanan">
+                  <option value="BARU_BERANGKAT">Baru Berangkat (masih di lokasi produksi)</option>
+                  <option value="TRANSIT">Transit (singgah, masih lanjut lagi)</option>
+                  <option value="SAMPAI_TUJUAN">Sampai Tujuan (perjalanan selesai)</option>
+                </optgroup>
+                <optgroup label="Setelah sampai">
+                  <option value="PENYIMPANAN_PASCA_DISTRIBUSI">Penyimpanan di toko (sudah sampai, belum terjual)</option>
+                </optgroup>
               </select>
             </div>
             <div>
