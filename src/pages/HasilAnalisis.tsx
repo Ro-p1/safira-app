@@ -238,6 +238,13 @@ export default function HasilAnalisis() {
         </div>
 
         <button
+          onClick={() => navigate(`/tracking/${productId}`)}
+          className="w-full flex items-center justify-center gap-2 bg-safira-dark text-white rounded-2xl py-3 text-sm font-medium mb-2"
+        >
+          Lihat Peta Distribusi
+        </button>
+
+        <button
           onClick={recalculateScore}
           disabled={recalculating}
           className="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-2xl py-3 text-sm text-gray-500 mb-2 disabled:opacity-50"

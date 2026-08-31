@@ -217,8 +217,9 @@ export default function Scan() {
       });
     }
 
-    // Alur "Scan -> Track -> Result" sesuai referensi infografis
-    navigate(`/tracking/${product.id}`);
+    // Alur "Scan -> Result -> Track": Hasil Analisis AI ditampilkan duluan,
+    // baru dari situ konsumen bisa lanjut lihat peta rute Tracking.
+    navigate(`/hasil/${product.id}`);
   }
 
   function handleManualSubmit(e: React.FormEvent) {
