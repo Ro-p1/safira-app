@@ -67,10 +67,7 @@ export default function Profil() {
   return (
     <div className="app-frame pb-24">
       <div className="gradient-header px-6 pt-6 pb-4 text-white">
-        <h1 className="font-heading text-lg font-bold flex items-center gap-2">
-          <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
-          Profil
-        </h1>
+        <h1 className="font-heading text-lg font-bold">Profil</h1>
         {user && <p className="text-sm text-white/80">{user.email}</p>}
       </div>
 
@@ -151,10 +148,10 @@ export default function Profil() {
           </button>
         </div>
 
-        {/* Cara SAFIRA menghitung */}
+        {/* Cara SITARA menghitung */}
         <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3 text-safira-dark font-heading font-semibold">
-            <BookOpen size={16} /> Cara SAFIRA Menghitung
+            <BookOpen size={16} /> Cara SITARA Menghitung
           </div>
           <ul className="text-sm text-gray-600 space-y-2">
             <li>• Kesegaran (30%) — umur produk dibanding masa simpan wajar kategorinya.</li>
@@ -182,12 +179,12 @@ export default function Profil() {
 
         {/* Latar belakang & SDGs — konten dari infografis referensi */}
         <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm">
-          <h3 className="font-heading font-semibold text-safira-dark mb-2">Tentang SAFIRA</h3>
+          <h3 className="font-heading font-semibold text-safira-dark mb-2">Tentang SITARA</h3>
           <p className="text-sm text-gray-600 mb-3">
             Sekitar 150 juta kasus orang sakit dan meninggal per tahun di Asia Tenggara akibat
             pangan tidak aman. 56% kasus keracunan di Indonesia berasal dari katering atau makanan
             rumahan, dan tercatat 9.089 kasus keracunan dalam 103 insiden pada program Makan Bergizi
-            Gratis. SAFIRA hadir untuk menjawab tantangan ini lewat Blockchain dan AI.
+            Gratis. SITARA hadir untuk menjawab tantangan ini lewat Blockchain dan AI.
           </p>
           <div className="grid grid-cols-2 gap-2">
             <SdgBadge icon={<Heart size={16} />} title="SDG 2" desc="Zero Hunger — pangan aman & berkualitas" />
@@ -202,7 +199,7 @@ export default function Profil() {
             <Smartphone size={16} /> Pasang sebagai Aplikasi
           </div>
           <p className="text-sm text-gray-600">
-            Buka menu browser lalu pilih "Tambahkan ke Layar Utama" untuk menjalankan SAFIRA
+            Buka menu browser lalu pilih "Tambahkan ke Layar Utama" untuk menjalankan SITARA
             seperti aplikasi native, lengkap dengan ikon dan mode layar penuh.
           </p>
         </div>

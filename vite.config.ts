@@ -9,12 +9,12 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "logo-192.png", "logo-512.png", "logo-mark.png"],
       manifest: {
-        name: "SAFIRA - Smart and Transparent Food Intelligent Risk Analysis",
-        short_name: "SAFIRA",
+        name: "SITARA - Smart Integrated Traceability and Risk Assessment",
+        short_name: "SITARA",
         description: "Aplikasi keamanan pangan berbasis Blockchain + AI",
         theme_color: "#183321",
         // Sama dengan warna latar logo, supaya splash screen native yang
-        // di-generate otomatis oleh Android/Chrome saat ikon SAFIRA di-tap
+        // di-generate otomatis oleh Android/Chrome saat ikon SITARA di-tap
         // dari layar utama menyatu mulus dengan ikonnya (tidak ada "kotak").
         background_color: "#183321",
         display: "standalone",

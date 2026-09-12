@@ -136,7 +136,7 @@ export default function DetailProdukProdusen() {
     const qrCanvas = document.getElementById("product-qr") as HTMLCanvasElement | null;
     if (!qrCanvas || !product) return;
 
-    // Bikin canvas baru yang lebih gede, isinya: logo kecil "SAFIRA" di
+    // Bikin canvas baru yang lebih gede, isinya: logo kecil "SITARA" di
     // atas, QR code-nya (di-gambar ulang di ukuran ASLI biar gak blur/
     // gampang di-scan), nama produk, lalu kode manual di paling bawah —
     // biar 1 gambar unduhan udah lengkap buat ditempel di kemasan.
@@ -170,7 +170,7 @@ export default function DetailProdukProdusen() {
     ctx.fillStyle = "#1F3D2E";
     ctx.font = "bold 13px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("SAFIRA", width / 2, y + 13);
+    ctx.fillText("SITARA", width / 2, y + 13);
     y += headerH;
 
     ctx.drawImage(qrCanvas, (width - qrSize) / 2, y, qrSize, qrSize);

@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 
 // Splash screen yang tampil sesaat setiap kali aplikasi dibuka (mis. saat
-// ikon SAFIRA di-tap dari layar utama HP), sebelum masuk ke Onboarding.
-// Tampilannya sengaja dibuat identik dengan ikon aplikasi: logo SAFIRA
-// (pin lokasi berbentuk huruf "S") di atas latar hijau tua polos.
+// ikon SITARA di-tap dari layar utama HP), sebelum masuk ke Onboarding.
+// Pakai ikon pin "S" (logo-mark.png, tanpa tulisan nempel di gambar) +
+// teks "SITARA" yang ditulis lewat kode, biar gampang diganti nama lagi
+// ke depannya tanpa perlu bikin ulang file gambar.
 export default function Splash() {
   return (
     <motion.div
@@ -14,13 +15,21 @@ export default function Splash() {
       style={{ backgroundColor: "#183321" }}
     >
       <motion.img
-        src="/logo-full.png"
-        alt="SAFIRA"
+        src="/logo-mark.png"
+        alt="SITARA"
         initial={{ scale: 0.85, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-32 h-auto object-contain"
+        className="w-24 h-auto object-contain"
       />
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25, duration: 0.4 }}
+        className="mt-5 font-heading font-bold text-lg tracking-wide text-white"
+      >
+        SITARA
+      </motion.p>
     </motion.div>
   );
 }
