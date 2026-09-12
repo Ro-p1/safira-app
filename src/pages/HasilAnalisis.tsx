@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, ShieldAlert, RefreshCw } from "lucide-react";
+import { ArrowLeft, ShieldCheck, ShieldAlert, RefreshCw, ThumbsUp, ThumbsDown, AlertTriangle } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { Product, RiskScore } from "../types";
 import BottomNav from "../components/BottomNav";
@@ -12,6 +12,8 @@ const statusColor: Record<string, string> = {
   MENUNGGU_DATA: "#9CA3AF",
 };
 
+type VerifRating = "SESUAI" | "KURANG_SESUAI" | "BERMASALAH";
+
 export default function HasilAnalisis() {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -22,10 +24,55 @@ export default function HasilAnalisis() {
   const [recalculating, setRecalculating] = useState(false);
   const [recalculateError, setRecalculateError] = useState<string | null>(null);
 
+  // Crowdsourced Verification
+  const [verifStats, setVerifStats] = useState<{ SESUAI: number; KURANG_SESUAI: number; BERMASALAH: number } | null>(null);
+  const [submittingVerif, setSubmittingVerif] = useState<VerifRating | null>(null);
+  const [verifDone, setVerifDone] = useState(false);
+  const [verifError, setVerifError] = useState<string | null>(null);
+
   useEffect(() => {
     load();
+    loadVerifStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
+
+  async function loadVerifStats() {
+    if (!productId) return;
+    const { data } = await supabase.from("crowd_verifications").select("rating").eq("product_id", productId);
+    const stats = { SESUAI: 0, KURANG_SESUAI: 0, BERMASALAH: 0 };
+    (data ?? []).forEach((v: any) => {
+      if (v.rating in stats) stats[v.rating as VerifRating]++;
+    });
+    setVerifStats(stats);
+  }
+
+  function submitVerification(rating: VerifRating) {
+    if (!productId || submittingVerif) return;
+    setSubmittingVerif(rating);
+    setVerifError(null);
+
+    function send(lat: number | null, lng: number | null) {
+      supabase.functions
+        .invoke("submit-verification", { body: { product_id: productId, rating, lat, lng } })
+        .then(({ error }) => {
+          if (error) throw error;
+          setVerifDone(true);
+          loadVerifStats();
+        })
+        .catch(() => setVerifError("Gagal mengirim verifikasi. Coba lagi sebentar lagi."))
+        .finally(() => setSubmittingVerif(null));
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => send(pos.coords.latitude, pos.coords.longitude),
+        () => send(null, null), // tetap kirim walau lokasi ditolak, cuma tanpa validasi jarak
+        { timeout: 8000 }
+      );
+    } else {
+      send(null, null);
+    }
+  }
 
   async function recalculateScore() {
     if (!productId || recalculating) return;
@@ -235,6 +282,56 @@ export default function HasilAnalisis() {
               Hash: {product.record_hash.slice(0, 10)}...{product.record_hash.slice(-8)}
             </p>
           </div>
+        </div>
+
+        <div className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm mb-4">
+          <h3 className="font-heading font-semibold text-safira-dark mb-1">Verifikasi dari Penerima</h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Bagaimana kondisi produk yang kamu terima? Penilaian ini membantu menjaga akurasi Riwayat
+            Risiko untuk produk berikutnya.
+          </p>
+
+          {verifStats && (verifStats.SESUAI + verifStats.KURANG_SESUAI + verifStats.BERMASALAH > 0) && (
+            <div className="flex gap-2 mb-3 text-xs">
+              <span className="px-2 py-1 rounded-full bg-green-50 text-green-700">Sesuai: {verifStats.SESUAI}</span>
+              <span className="px-2 py-1 rounded-full bg-amber-50 text-amber-700">Kurang Sesuai: {verifStats.KURANG_SESUAI}</span>
+              <span className="px-2 py-1 rounded-full bg-red-50 text-red-700">Bermasalah: {verifStats.BERMASALAH}</span>
+            </div>
+          )}
+
+          {verifDone ? (
+            <p className="text-sm text-safira-dark bg-safira-mosslight/10 rounded-2xl p-3 text-center">
+              Terima kasih, verifikasimu sudah tercatat.
+            </p>
+          ) : (
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                onClick={() => submitVerification("SESUAI")}
+                disabled={submittingVerif !== null}
+                className="flex flex-col items-center gap-1 border border-gray-200 rounded-2xl py-3 text-xs disabled:opacity-50"
+              >
+                <ThumbsUp size={18} className="text-green-600" />
+                Sesuai
+              </button>
+              <button
+                onClick={() => submitVerification("KURANG_SESUAI")}
+                disabled={submittingVerif !== null}
+                className="flex flex-col items-center gap-1 border border-gray-200 rounded-2xl py-3 text-xs disabled:opacity-50"
+              >
+                <AlertTriangle size={18} className="text-amber-500" />
+                Kurang Sesuai
+              </button>
+              <button
+                onClick={() => submitVerification("BERMASALAH")}
+                disabled={submittingVerif !== null}
+                className="flex flex-col items-center gap-1 border border-gray-200 rounded-2xl py-3 text-xs disabled:opacity-50"
+              >
+                <ThumbsDown size={18} className="text-red-600" />
+                Bermasalah
+              </button>
+            </div>
+          )}
+          {verifError && <p className="text-xs text-red-500 text-center mt-2">{verifError}</p>}
         </div>
 
         <button

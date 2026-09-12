@@ -30,6 +30,10 @@ export interface Product {
   metode_produksi: string | null;
   sertifikasi: string[];
   foto_url: string | null;
+  waktu_masak?: string | null;
+  batas_konsumsi_jam?: number | null;
+  kapasitas_dapur_porsi?: number | null;
+  porsi_diproduksi?: number | null;
   qr_code_value: string;
   supersedes_id: string | null;
   prev_hash: string;

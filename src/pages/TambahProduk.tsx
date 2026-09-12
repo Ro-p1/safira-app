@@ -22,6 +22,11 @@ export default function TambahProduk() {
   const [metode, setMetode] = useState("");
   const [sertifikasi, setSertifikasi] = useState<string[]>([]);
   const [sertifikasiInput, setSertifikasiInput] = useState("");
+  const [showSopFields, setShowSopFields] = useState(false);
+  const [waktuMasak, setWaktuMasak] = useState("");
+  const [batasKonsumsiJam, setBatasKonsumsiJam] = useState("");
+  const [kapasitasDapurPorsi, setKapasitasDapurPorsi] = useState("");
+  const [porsiDiproduksi, setPorsiDiproduksi] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -108,6 +113,12 @@ export default function TambahProduk() {
           metode_produksi: metode || null,
           sertifikasi,
           foto_url: fotoUrl,
+          // Opsional — cuma relevan untuk produsen/pengelola dapur (mis.
+          // dapur SPPG program MBG). Dikirim null kalau tidak diisi.
+          waktu_masak: waktuMasak ? new Date(waktuMasak).toISOString() : null,
+          batas_konsumsi_jam: batasKonsumsiJam ? parseFloat(batasKonsumsiJam) : null,
+          kapasitas_dapur_porsi: kapasitasDapurPorsi ? parseFloat(kapasitasDapurPorsi) : null,
+          porsi_diproduksi: porsiDiproduksi ? parseFloat(porsiDiproduksi) : null,
         },
         headers: { Authorization: `Bearer ${session?.access_token}` },
       });
@@ -238,6 +249,69 @@ export default function TambahProduk() {
           <label className="text-sm font-medium text-gray-600 block mb-1">Foto produk (opsional)</label>
           <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFileChange} className="w-full border border-gray-200 rounded-2xl px-4 py-3" />
           {fileError && <p className="text-xs text-red-600 mt-1">{fileError}</p>}
+        </div>
+
+        <div className="border border-gray-200 rounded-2xl p-4">
+          <button
+            type="button"
+            onClick={() => setShowSopFields((v) => !v)}
+            className="text-sm font-medium text-safira-dark flex items-center justify-between w-full"
+          >
+            Data Dapur SPPG (opsional — khusus penyedia program MBG)
+            <span className="text-xs text-gray-400">{showSopFields ? "Sembunyikan" : "Tampilkan"}</span>
+          </button>
+          {showSopFields && (
+            <div className="mt-4 space-y-4">
+              <p className="text-xs text-gray-500">
+                Isi bagian ini kalau kamu pengelola dapur/SPPG. Dipakai untuk mengecek kepatuhan SOP
+                (waktu masak, batas konsumsi, kapasitas dapur) — bukan wajib untuk produsen umum.
+              </p>
+              <div>
+                <label className="text-sm font-medium text-gray-600 block mb-1">Waktu selesai dimasak</label>
+                <input
+                  type="datetime-local"
+                  value={waktuMasak}
+                  onChange={(e) => setWaktuMasak(e.target.value)}
+                  className="w-full border border-gray-200 rounded-2xl px-4 py-3"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-600 block mb-1">Batas aman konsumsi (jam sejak masak)</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={batasKonsumsiJam}
+                  onChange={(e) => setBatasKonsumsiJam(e.target.value)}
+                  placeholder="mis. 4"
+                  className="w-full border border-gray-200 rounded-2xl px-4 py-3"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm font-medium text-gray-600 block mb-1">Kapasitas dapur (porsi)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={kapasitasDapurPorsi}
+                    onChange={(e) => setKapasitasDapurPorsi(e.target.value)}
+                    placeholder="mis. 500"
+                    className="w-full border border-gray-200 rounded-2xl px-4 py-3"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-600 block mb-1">Porsi diproduksi</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={porsiDiproduksi}
+                    onChange={(e) => setPorsiDiproduksi(e.target.value)}
+                    placeholder="mis. 480"
+                    className="w-full border border-gray-200 rounded-2xl px-4 py-3"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-2xl p-3">{error}</p>}
