@@ -167,7 +167,7 @@ export default function DetailProdukProdusen() {
     ctx.fillRect(0, 0, width, height);
 
     let y = padding;
-    ctx.fillStyle = "#0D3B3B";
+    ctx.fillStyle = "#0C2F3D";
     ctx.font = "bold 13px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("SITARA", width / 2, y + 13);
@@ -176,7 +176,7 @@ export default function DetailProdukProdusen() {
     ctx.drawImage(qrCanvas, (width - qrSize) / 2, y, qrSize, qrSize);
     y += qrSize + 16;
 
-    ctx.fillStyle = "#0D3B3B";
+    ctx.fillStyle = "#0C2F3D";
     ctx.font = "bold 16px sans-serif";
     nameLines.forEach((line, i) => ctx.fillText(line, width / 2, y + 16 + i * 22));
     y += nameH;

@@ -202,7 +202,7 @@ export default function HasilAnalisis() {
                 transform="rotate(-90 90 90)"
               />
             )}
-            <text x="90" y="85" textAnchor="middle" className="font-heading" fontSize="36" fontWeight="700" fill="#0D3B3B">
+            <text x="90" y="85" textAnchor="middle" className="font-heading" fontSize="36" fontWeight="700" fill="#0C2F3D">
               {belumAdaData ? "-" : Math.round(totalScore)}
             </text>
             <text x="90" y="108" textAnchor="middle" fontSize="11" fill="#9CA3AF">

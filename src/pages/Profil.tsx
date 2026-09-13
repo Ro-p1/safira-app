@@ -213,7 +213,7 @@ export default function Profil() {
 function StatBox({ value, label, color }: { value: number; label: string; color?: string }) {
   return (
     <div>
-      <p className="font-heading text-lg font-bold" style={{ color: color ?? "#0D3B3B" }}>
+      <p className="font-heading text-lg font-bold" style={{ color: color ?? "#0C2F3D" }}>
         {value}
       </p>
       <p className="text-[10px] text-gray-400 uppercase">{label}</p>
