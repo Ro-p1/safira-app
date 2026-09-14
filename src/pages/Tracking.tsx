@@ -331,7 +331,7 @@ export default function Tracking() {
           </div>
         ) : (
           <div className="h-56 w-full bg-safira-mosslight/10 flex flex-col items-center justify-center text-center px-8">
-            <MapPin size={28} className="text-safira-moss mb-2" />
+            <MapPin size={28} className="text-safira-dark mb-2" />
             <p className="text-sm text-gray-500">
               Peta belum tersedia. Titik lokasi produksi/distribusi produk ini belum punya koordinat GPS.
             </p>
@@ -495,7 +495,7 @@ function InfoStat({
 function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
     <div className="bg-white border border-gray-100 rounded-2xl p-3 flex flex-col items-center gap-1 shadow-sm">
-      <div className="text-safira-moss">{icon}</div>
+      <div className="text-safira-dark">{icon}</div>
       <span className="font-heading font-bold text-safira-dark">{value}</span>
       <span className="text-[10px] text-gray-400 uppercase text-center">{label}</span>
     </div>
