@@ -31,7 +31,7 @@ body {
 }
 
 .gradient-header {
-  background: linear-gradient(135deg, #0c2f3d 0%, #14495a 60%, #6fa83a 100%);
+  background: linear-gradient(135deg, #0c2f3d 0%, #14495a 55%, #d4e85c 100%);
 }
 
 .gradient-btn {
