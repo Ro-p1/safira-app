@@ -44,7 +44,7 @@ function truckDivIcon() {
 }
 
 function stopDivIcon(isWarning: boolean, isStart: boolean) {
-  const bg = isWarning ? "#EF4444" : isStart ? "#0C2F3D" : "#6FA83A";
+  const bg = isWarning ? "#EF4444" : isStart ? "#0C2F3D" : "#D4E85C";
   return L.divIcon({
     className: "",
     html: `<div style="background:${bg};width:16px;height:16px;border-radius:9999px;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>`,

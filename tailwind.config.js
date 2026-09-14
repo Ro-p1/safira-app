@@ -7,7 +7,7 @@ export default {
         safira: {
           dark: "#0C2F3D",
           deep: "#14495A",
-          moss: "#6FA83A",
+          moss: "#D4E85C",
           mosslight: "#D4E85C",
           gold: "#D4AF37",
           goldlight: "#E8B923",
