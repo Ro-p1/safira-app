@@ -229,9 +229,9 @@ export default function Scan() {
 
   return (
     <div className="app-frame pb-20">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
         <h1 className="font-heading text-xl font-bold">Scan QR Produk</h1>
-        <p className="text-sm text-white/80">Arahkan kamera ke QR pada kemasan</p>
+        <p className="text-sm text-safira-dark/70">Arahkan kamera ke QR pada kemasan</p>
       </div>
 
       {deepLinkQrCode && !error && (
@@ -293,7 +293,7 @@ export default function Scan() {
               placeholder="contoh: b4aee85a-2e73-43da-a675-..."
               className="w-full border border-gray-200 rounded-2xl px-4 py-3"
             />
-            <button type="submit" className="gradient-btn w-full py-3 rounded-2xl text-white font-semibold">
+            <button type="submit" className="gradient-btn w-full py-3 rounded-2xl text-safira-dark font-semibold">
               Cari Produk
             </button>
           </form>

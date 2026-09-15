@@ -64,7 +64,7 @@ export default function Riwayat() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
         <h1 className="font-heading text-lg font-bold flex items-center gap-2">
           <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
           Riwayat Scan

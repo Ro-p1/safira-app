@@ -164,13 +164,13 @@ export default function HasilAnalisis() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white flex items-center gap-3">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark flex items-center gap-3">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
         </button>
         <div>
           <h1 className="font-heading text-lg font-bold">Hasil Analisis AI</h1>
-          <p className="text-sm text-white/80">{product.nama_produk}</p>
+          <p className="text-sm text-safira-dark/70">{product.nama_produk}</p>
         </div>
       </div>
 
@@ -202,7 +202,7 @@ export default function HasilAnalisis() {
                 transform="rotate(-90 90 90)"
               />
             )}
-            <text x="90" y="85" textAnchor="middle" className="font-heading" fontSize="36" fontWeight="700" fill="#0C2F3D">
+            <text x="90" y="85" textAnchor="middle" className="font-heading" fontSize="36" fontWeight="700" fill="#0F5D52">
               {belumAdaData ? "-" : Math.round(totalScore)}
             </text>
             <text x="90" y="108" textAnchor="middle" fontSize="11" fill="#9CA3AF">
@@ -336,7 +336,7 @@ export default function HasilAnalisis() {
 
         <button
           onClick={() => navigate(`/tracking/${productId}`)}
-          className="w-full flex items-center justify-center gap-2 bg-safira-dark text-white rounded-2xl py-3 text-sm font-medium mb-2"
+          className="w-full flex items-center justify-center gap-2 bg-safira-mosslight text-safira-dark rounded-2xl py-3 text-sm font-medium mb-2"
         >
           Lihat Peta Distribusi
         </button>

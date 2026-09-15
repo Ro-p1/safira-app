@@ -167,7 +167,7 @@ export default function DetailProdukProdusen() {
     ctx.fillRect(0, 0, width, height);
 
     let y = padding;
-    ctx.fillStyle = "#0C2F3D";
+    ctx.fillStyle = "#0F5D52";
     ctx.font = "bold 13px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("SITARA", width / 2, y + 13);
@@ -176,7 +176,7 @@ export default function DetailProdukProdusen() {
     ctx.drawImage(qrCanvas, (width - qrSize) / 2, y, qrSize, qrSize);
     y += qrSize + 16;
 
-    ctx.fillStyle = "#0C2F3D";
+    ctx.fillStyle = "#0F5D52";
     ctx.font = "bold 16px sans-serif";
     nameLines.forEach((line, i) => ctx.fillText(line, width / 2, y + 16 + i * 22));
     y += nameH;
@@ -224,7 +224,7 @@ export default function DetailProdukProdusen() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white flex items-center gap-3">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark flex items-center gap-3">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
         </button>
@@ -243,7 +243,7 @@ export default function DetailProdukProdusen() {
             </button>
             <button
               onClick={() => navigate(`/hasil/${product.id}`)}
-              className="flex-1 flex items-center justify-center gap-2 gradient-btn text-white rounded-2xl py-2 text-sm"
+              className="flex-1 flex items-center justify-center gap-2 gradient-btn text-safira-dark rounded-2xl py-2 text-sm"
             >
               <ExternalLink size={14} /> Lihat Halaman Konsumen
             </button>
@@ -364,7 +364,7 @@ export default function DetailProdukProdusen() {
             <button
               type="submit"
               disabled={submitting}
-              className="gradient-btn w-full py-3 rounded-2xl text-white font-semibold disabled:opacity-50"
+              className="gradient-btn w-full py-3 rounded-2xl text-safira-dark font-semibold disabled:opacity-50"
             >
               {submitting ? "Menyimpan..." : "+ Simpan Catatan"}
             </button>

@@ -66,9 +66,9 @@ export default function Profil() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
         <h1 className="font-heading text-lg font-bold">Profil</h1>
-        {user && <p className="text-sm text-white/80">{user.email}</p>}
+        {user && <p className="text-sm text-safira-dark/70">{user.email}</p>}
       </div>
 
       <div className="px-6 py-6 space-y-4">
@@ -86,7 +86,7 @@ export default function Profil() {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg"
+            className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg"
           >
             Login / Daftar Akun
           </button>
@@ -213,7 +213,7 @@ export default function Profil() {
 function StatBox({ value, label, color }: { value: number; label: string; color?: string }) {
   return (
     <div>
-      <p className="font-heading text-lg font-bold" style={{ color: color ?? "#0C2F3D" }}>
+      <p className="font-heading text-lg font-bold" style={{ color: color ?? "#0F5D52" }}>
         {value}
       </p>
       <p className="text-[10px] text-gray-400 uppercase">{label}</p>

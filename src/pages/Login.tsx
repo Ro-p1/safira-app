@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className="app-frame">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white flex items-center gap-3">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark flex items-center gap-3">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
         </button>
@@ -60,7 +60,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg disabled:opacity-50"
+          className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg disabled:opacity-50"
         >
           {loading ? "Memproses..." : mode === "login" ? "Masuk" : "Daftar"}
         </button>

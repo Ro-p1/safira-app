@@ -5,10 +5,10 @@ export default {
     extend: {
       colors: {
         safira: {
-          dark: "#0C2F3D",
-          deep: "#14495A",
+          dark: "#0F5D52",
+          deep: "#1E8C7A",
           moss: "#D4E85C",
-          mosslight: "#D4E85C",
+          mosslight: "#9FE8C8",
           gold: "#D4AF37",
           goldlight: "#E8B923",
         },

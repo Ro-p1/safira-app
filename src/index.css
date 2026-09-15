@@ -5,7 +5,7 @@
 body {
   font-family: "Poppins", "Inter", sans-serif;
   background: linear-gradient(180deg, #f4f8f4 0%, #ffffff 40%);
-  color: #0c2f3d;
+  color: #0f5d52;
 }
 
 .font-heading {
@@ -31,9 +31,9 @@ body {
 }
 
 .gradient-header {
-  background: linear-gradient(135deg, #0c2f3d 0%, #14495a 55%, #d4e85c 100%);
+  background: linear-gradient(135deg, #d4e85c 0%, #9fe8c8 55%, #6fd8c4 100%);
 }
 
 .gradient-btn {
-  background: linear-gradient(135deg, #0c2f3d 0%, #14495a 100%);
+  background: linear-gradient(135deg, #d4e85c 0%, #7fdcc4 100%);
 }

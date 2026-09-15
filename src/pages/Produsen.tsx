@@ -59,7 +59,7 @@ export default function Produsen() {
   if (!user) {
     return (
       <div className="app-frame pb-24">
-        <div className="gradient-header px-6 pt-6 pb-4 text-white">
+        <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
           <h1 className="font-heading text-lg font-bold flex items-center gap-2">
             <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
             Produsen
@@ -76,7 +76,7 @@ export default function Produsen() {
   if (!producer) {
     return (
       <div className="app-frame pb-24">
-        <div className="gradient-header px-6 pt-6 pb-4 text-white">
+        <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
           <h1 className="font-heading text-lg font-bold flex items-center gap-2">
             <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
             Daftar sebagai Produsen
@@ -89,7 +89,7 @@ export default function Produsen() {
           <button
             type="submit"
             disabled={submitting}
-            className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg disabled:opacity-50"
+            className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg disabled:opacity-50"
           >
             {submitting ? "Mengirim..." : "Ajukan Pendaftaran"}
           </button>
@@ -102,7 +102,7 @@ export default function Produsen() {
   if (producer.status_verifikasi === "pending") {
     return (
       <div className="app-frame pb-24">
-        <div className="gradient-header px-6 pt-6 pb-4 text-white">
+        <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
           <h1 className="font-heading text-lg font-bold flex items-center gap-2">
             <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
             Menunggu Verifikasi
@@ -120,18 +120,18 @@ export default function Produsen() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark">
         <h1 className="font-heading text-lg font-bold flex items-center gap-2">
           <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
           Dashboard Produsen
         </h1>
-        <p className="text-sm text-white/80">{producer.nama}</p>
+        <p className="text-sm text-safira-dark/70">{producer.nama}</p>
       </div>
 
       <div className="px-6 py-4">
         <button
           onClick={() => navigate("/produsen/tambah")}
-          className="gradient-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl text-white font-semibold shadow-lg"
+          className="gradient-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl text-safira-dark font-semibold shadow-lg"
         >
           <PackagePlus size={18} /> Tambah Produk Baru
         </button>

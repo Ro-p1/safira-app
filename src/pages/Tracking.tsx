@@ -33,7 +33,7 @@ type GeoPoint = {
 function truckDivIcon() {
   return L.divIcon({
     className: "",
-    html: `<div style="background:#0C2F3D;width:34px;height:34px;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.35);border:2px solid white;">
+    html: `<div style="background:#0F5D52;width:34px;height:34px;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.35);border:2px solid white;">
              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                <path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
              </svg>
@@ -44,7 +44,7 @@ function truckDivIcon() {
 }
 
 function stopDivIcon(isWarning: boolean, isStart: boolean) {
-  const bg = isWarning ? "#EF4444" : isStart ? "#0C2F3D" : "#D4E85C";
+  const bg = isWarning ? "#EF4444" : isStart ? "#0F5D52" : "#D4E85C";
   return L.divIcon({
     className: "",
     html: `<div style="background:${bg};width:16px;height:16px;border-radius:9999px;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>`,
@@ -308,7 +308,7 @@ export default function Tracking() {
                   // Pakai rute jalan (routeCoords) kalau sudah didapat dari OSRM;
                   // kalau belum/gagal, sementara tampilkan garis lurus dulu.
                   positions={routeCoords ?? geoPoints.map((p) => [p.lat, p.lng])}
-                  pathOptions={{ color: "#0C2F3D", weight: 4, opacity: 0.85 }}
+                  pathOptions={{ color: "#0F5D52", weight: 4, opacity: 0.85 }}
                 />
               )}
               {geoPoints.map((p, i) => {
@@ -345,10 +345,10 @@ export default function Tracking() {
           <div className="w-10 h-1.5 bg-gray-200 rounded-full" />
         </div>
 
-        <div className="gradient-header mx-4 mt-3 rounded-2xl px-5 py-4 text-white">
-          <p className="text-xs text-white/70">{currentPoint ? "Posisi terkini" : "Produk"}</p>
+        <div className="gradient-header mx-4 mt-3 rounded-2xl px-5 py-4 text-safira-dark">
+          <p className="text-xs text-safira-dark/70">{currentPoint ? "Posisi terkini" : "Produk"}</p>
           <h1 className="font-heading text-xl font-bold">{product.nama_produk}</h1>
-          <p className="text-sm text-white/80">{currentPoint?.label ?? product.lokasi_produksi}</p>
+          <p className="text-sm text-safira-dark/70">{currentPoint?.label ?? product.lokasi_produksi}</p>
         </div>
 
         <div className="px-5 pt-4 grid grid-cols-2 gap-3">
@@ -408,7 +408,7 @@ export default function Tracking() {
                   <XAxis dataKey="label" tick={{ fontSize: 12 }} />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="suhu" stroke="#0C2F3D" strokeWidth={2} dot={{ r: 4 }} />
+                  <Line type="monotone" dataKey="suhu" stroke="#0F5D52" strokeWidth={2} dot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
@@ -448,7 +448,7 @@ export default function Tracking() {
         <div className="px-5 pb-6">
           <button
             onClick={() => navigate(`/hasil/${product.id}`)}
-            className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg"
+            className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg"
           >
             Lihat Hasil Analisis AI
           </button>

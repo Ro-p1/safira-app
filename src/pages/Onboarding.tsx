@@ -46,12 +46,12 @@ export default function Onboarding({ onFinish }: { onFinish: () => void }) {
 
   return (
     <div className="app-frame flex flex-col">
-      <div className="gradient-header px-6 pt-6 pb-4 flex items-center justify-between text-white">
+      <div className="gradient-header px-6 pt-6 pb-4 flex items-center justify-between text-safira-dark">
         <span className="font-heading font-bold text-lg tracking-wide flex items-center gap-2">
           <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
           SITARA
         </span>
-        <button onClick={onFinish} className="text-sm text-white/80">
+        <button onClick={onFinish} className="text-sm text-safira-dark/70">
           Lewati
         </button>
       </div>
@@ -91,7 +91,7 @@ export default function Onboarding({ onFinish }: { onFinish: () => void }) {
       <div className="px-6 pb-8">
         <button
           onClick={next}
-          className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg"
+          className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg"
         >
           {isLast ? "Mulai" : "Lanjut"}
         </button>

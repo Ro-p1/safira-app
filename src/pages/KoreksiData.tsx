@@ -74,13 +74,13 @@ export default function KoreksiData() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white flex items-center gap-3">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark flex items-center gap-3">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
         </button>
         <div>
           <h1 className="font-heading text-lg font-bold">Koreksi Data</h1>
-          <p className="text-sm text-white/80">Versi lama tetap tersimpan</p>
+          <p className="text-sm text-safira-dark/70">Versi lama tetap tersimpan</p>
         </div>
       </div>
 
@@ -127,7 +127,7 @@ export default function KoreksiData() {
         <button
           type="submit"
           disabled={submitting}
-          className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg disabled:opacity-50"
+          className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg disabled:opacity-50"
         >
           {submitting ? "Menyimpan..." : "Simpan Versi Baru"}
         </button>

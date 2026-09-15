@@ -12,11 +12,11 @@ export default defineConfig({
         name: "SITARA - Smart Integrated Traceability and Risk Assessment",
         short_name: "SITARA",
         description: "Aplikasi keamanan pangan berbasis Blockchain + AI",
-        theme_color: "#0C2F3D",
+        theme_color: "#D4E85C",
         // Sama dengan warna latar logo, supaya splash screen native yang
         // di-generate otomatis oleh Android/Chrome saat ikon SITARA di-tap
         // dari layar utama menyatu mulus dengan ikonnya (tidak ada "kotak").
-        background_color: "#0C2F3D",
+        background_color: "#D4E85C",
         display: "standalone",
         start_url: "/",
         icons: [

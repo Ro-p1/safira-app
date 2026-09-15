@@ -135,7 +135,7 @@ export default function TambahProduk() {
 
   return (
     <div className="app-frame pb-24">
-      <div className="gradient-header px-6 pt-6 pb-4 text-white flex items-center gap-3">
+      <div className="gradient-header px-6 pt-6 pb-4 text-safira-dark flex items-center gap-3">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={22} />
         </button>
@@ -319,7 +319,7 @@ export default function TambahProduk() {
         <button
           type="submit"
           disabled={submitting}
-          className="gradient-btn w-full py-4 rounded-2xl text-white font-semibold shadow-lg disabled:opacity-50"
+          className="gradient-btn w-full py-4 rounded-2xl text-safira-dark font-semibold shadow-lg disabled:opacity-50"
         >
           {submitting ? "Menyimpan..." : "Terbitkan Produk & QR Code"}
         </button>

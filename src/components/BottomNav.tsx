@@ -25,7 +25,7 @@ export default function BottomNav() {
             {({ isActive }) => (
               <>
                 <div
-                  className={`p-2 rounded-full ${isActive ? "bg-safira-dark text-white" : ""}`}
+                  className={`p-2 rounded-full ${isActive ? "bg-safira-mosslight text-safira-dark" : ""}`}
                 >
                   <Icon size={20} />
                 </div>
